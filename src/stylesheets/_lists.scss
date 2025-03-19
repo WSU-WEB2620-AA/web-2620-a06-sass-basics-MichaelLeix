@@ -1,0 +1,83 @@
+@use "sass:map";
+
+// uses a for loop to iterate through columns
+@for $i from 1 through 12 {
+    .column-#{$i} {
+        width: 100%;
+  
+        @media all and (min-width: 576px) {
+            width: calc(100% / 12) * $i;
+        }
+    }
+}
+  
+$list-styles: (
+    default: (
+        item-padding: 2em 0em 1.25em 0em,
+        border-color: #303030,
+        link-color: rgba(255, 255, 255, .5)
+    ),
+
+    style1: (
+        item-padding: 0.60em 0em,
+        border-color: rgba(0, 0, 0, .1)
+    ),
+
+    style2: (
+        item-padding: 1.90em 0em 1.60em 0em,
+        border-color: rgba(0, 0, 0, .1)
+    )
+);
+  
+@mixin list-style($border-color, $item-padding) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    
+    li {
+        padding: $item-padding;
+        border-top: 1px solid $border-color;
+      
+        &:first-child {
+            padding-top: 0;
+            border-top: none;
+        }
+    }
+}
+  
+@each $name, $styles in $list-styles {
+    ul.#{$name} {
+        @include list-style(map.get($styles, border-color), map.get($styles, item-padding));
+      
+        @if $name == default {
+            a {
+                text-decoration: none;
+                color: map.get($styles, link-color);
+  
+                &:hover {
+                text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+  
+ul {
+    &.style2 img {
+        float: left;
+        padding-right: 1em;
+    }
+  
+    &.style5 {
+        overflow: hidden;
+        margin: 0em 0em 1em 0em;
+        padding: 0em;
+        list-style: none;
+      
+        li {
+            float: left;
+            padding: 0.25em;
+            line-height: 0;
+        }
+    }
+}
